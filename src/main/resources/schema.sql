@@ -1,0 +1,50 @@
+DROP TABLE IF EXISTS opening_hour;
+DROP TABLE IF EXISTS purchase_history;
+DROP TABLE IF EXISTS mask;
+DROP TABLE IF EXISTS pharmacy;
+DROP TABLE IF EXISTS "user";
+
+DROP TYPE IF EXISTS TypeDay;
+
+CREATE TYPE TypeDay AS ENUM ('MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN');
+
+CREATE TABLE "user" (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(20) NOT NULL,
+  cash FLOAT NOT NULL
+);
+
+CREATE TABLE pharmacy (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(20) NOT NULL,
+  cash FLOAT NOT NULL
+);
+
+CREATE TABLE mask (
+  id SERIAL PRIMARY KEY,
+  idPharmacy INTEGER NOT NULL,
+  name VARCHAR(50) NOT NULL,
+  price FLOAT NOT NULL,
+  CONSTRAINT fk_idPharmacy FOREIGN KEY(idPharmacy) REFERENCES Pharmacy(id) ON DELETE CASCADE
+);
+
+CREATE TABLE purchase_history (
+  id SERIAL PRIMARY KEY,
+  idUser INTEGER NOT NULL,
+  idPharmacy INTEGER NOT NULL,
+  idMask INTEGER NOT NULL,
+  amount FLOAT NOT NULL,
+  transactionDate TIMESTAMP NOT NULL,
+  CONSTRAINT fk_idUser FOREIGN KEY(idUser) REFERENCES "user"(id) ON DELETE CASCADE,
+  CONSTRAINT fk_idPharmacy FOREIGN KEY(idPharmacy) REFERENCES Pharmacy(id) ON DELETE CASCADE,
+  CONSTRAINT fk_idMask FOREIGN KEY(idMask) REFERENCES Mask(id) ON DELETE CASCADE
+);
+
+CREATE TABLE opening_hour (
+  id SERIAL PRIMARY KEY,
+  idPharmacy INTEGER NOT NULL,
+  open_at TIME NOT NULL,
+  close_at TIME NOT NULL,
+  day TypeDay NOT NULL,
+  CONSTRAINT fk_idPharmacy FOREIGN KEY(idPharmacy) REFERENCES Pharmacy(id) ON DELETE CASCADE
+);
