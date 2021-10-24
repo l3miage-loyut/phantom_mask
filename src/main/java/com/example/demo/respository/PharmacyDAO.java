@@ -82,9 +82,21 @@ public class PharmacyDAO implements DAO<Pharmacy>{
   }
 
   @Override
-  public Pharmacy update(Pharmacy t) {
+  public Pharmacy update(Pharmacy t, Connection connection) {
     // TODO Auto-generated method stub
-    return null;
+    try {
+      PreparedStatement stmt = connection.prepareStatement("UPDATE pharmacy SET name = ?, cash = ? WHERE id = ?");
+      stmt.setString(1, t.getName());
+      stmt.setFloat(2, t.getCash());
+      stmt.setInt(3, t.getId());
+      stmt.executeUpdate();
+      
+      return t;
+      
+    } catch (Exception e) {
+      System.out.println(e);
+      return null;
+    }
   }
 
   @Override
@@ -147,6 +159,42 @@ public class PharmacyDAO implements DAO<Pharmacy>{
       return pharmacies;
     } catch (Exception e) {
       System.out.println(e);
+      return null;
+    }
+  }
+
+  public ArrayList<String> relevance(String key) {
+    try (Connection connection = dataSource.getConnection()) {
+      PreparedStatement stmt = connection.prepareStatement("SELECT DISTINCT \"name\" FROM pharmacy WHERE \"name\" LIKE ?");
+      stmt.setString(1, "%" + key + "%");
+      ResultSet rs = stmt.executeQuery();
+
+      ArrayList<String> pharmacies = new ArrayList<String>();
+
+      while (rs.next()) {
+        pharmacies.add(rs.getString("name"));
+      }
+      return pharmacies;
+    } catch (Exception e) {
+      System.out.println(e);
+      return null;
+    }
+  }
+
+  public Pharmacy getPharmacyByName(String pharmacyName, Connection connection) {
+    try {
+      PreparedStatement stmt = connection.prepareStatement("SELECT * FROM pharmacy WHERE \"name\" = ?");
+      stmt.setString(1, pharmacyName);
+      ResultSet rs = stmt.executeQuery();
+
+      Pharmacy pharmacy = new Pharmacy();
+      if (rs.next()) {
+        pharmacy.setId(rs.getInt("id"));
+        pharmacy.setName(rs.getString("name"));
+        pharmacy.setCash(rs.getFloat("cash"));
+      }
+      return pharmacy;
+    } catch (Exception e) {
       return null;
     }
   }

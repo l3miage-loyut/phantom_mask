@@ -35,6 +35,7 @@ public class PharmacyController {
   }
   
   // List all pharmacies that are open at a certain time, and on a day of the week if requested
+  // ex : {url}/api/pharmacies/open_at?time=11:00&day=TUE
   @GetMapping("/open_at")
   public ArrayList<String> openAt(@RequestParam(required = true) String time, @RequestParam(required = false) String day) {
     ArrayList<String> pharmacies = pharmacyDAO.isOpen(time, day);
@@ -42,6 +43,7 @@ public class PharmacyController {
   }
 
   // List all pharmacies that have more or less than x mask products within a price range
+  // ex : {url}/api/pharmacies/masks_amount?start=20&end=40&more_than=1&less_than=
   @GetMapping("/masks_amount")
   public ArrayList<String> soldBy(@RequestParam(required = true) String start,
       @RequestParam(required = true) String end, 
@@ -54,5 +56,13 @@ public class PharmacyController {
       ArrayList<String> pharmacies = pharmacyDAO.masksAmount(start, end, more_than, less_than);
       return pharmacies;
     }
+  }
+
+  // Search for pharmacies by name, ranked by relevance to search term
+  // ex : {url}/api/pharmacies/search?key=Sav
+  @GetMapping("/search")
+  public ArrayList<String> relevance(@RequestParam(required = true) String key) {
+    ArrayList<String> pharmacies = pharmacyDAO.relevance(key);
+    return pharmacies;
   }
 }

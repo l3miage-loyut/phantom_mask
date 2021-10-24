@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import javax.sql.DataSource;
 
+import com.example.demo.model.Pharmacy;
 import com.example.demo.model.PurchaseHistory;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class PurchaseHistoryDAO implements DAO<PurchaseHistory> {
   }
 
   @Override
-  public PurchaseHistory update(PurchaseHistory t) {
+  public PurchaseHistory update(PurchaseHistory t, Connection connection) {
     // TODO Auto-generated method stub
     return null;
   }
@@ -69,6 +70,26 @@ public class PurchaseHistoryDAO implements DAO<PurchaseHistory> {
       return purchase_histories;
     } catch (Exception e) {
       return null;
+    }
+  }
+
+  public int save(PurchaseHistory ph, int idUser, int idMask, Connection connection) {
+    try {
+      PreparedStatement stmt = connection.prepareStatement(
+          "INSERT INTO purchase_history (idUser, idPharmacy, idMask, amount, transactionDate) VALUES (?, ?, ?, ?, ?)");
+      stmt.setInt(1, idUser);
+
+      PharmacyDAO pharmacyDAO = new PharmacyDAO();
+      Pharmacy pharmacy = pharmacyDAO.getPharmacyByName(ph.getPharmacy(), connection);
+      stmt.setInt(2, pharmacy.getId());
+
+      stmt.setInt(3, idMask);
+      stmt.setFloat(4, ph.getAmount());
+      stmt.setTimestamp(5, ph.getTransactionDate());
+      return stmt.executeUpdate();
+    } catch (Exception e) {
+      System.out.println(e);
+      return -1;
     }
   }
 }

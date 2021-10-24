@@ -38,7 +38,7 @@ public class OpeningHourDAO implements DAO<OpeningHour>{
   }
 
   @Override
-  public OpeningHour update(OpeningHour t) {
+  public OpeningHour update(OpeningHour t, Connection connection) {
     // TODO Auto-generated method stub
     return null;
   }
