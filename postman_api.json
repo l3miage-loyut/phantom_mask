@@ -1,0 +1,413 @@
+{
+	"info": {
+		"_postman_id": "dca3516b-8e21-42d8-b128-df85a189ad83",
+		"name": "phantom_mask",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://kdan-hw-phantom-mask.herokuapp.com/api/users/",
+					"protocol": "https",
+					"host": [
+						"kdan-hw-phantom-mask",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"users",
+						""
+					]
+				},
+				"description": "List all users"
+			},
+			"response": []
+		},
+		{
+			"name": "Pharmacies",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://kdan-hw-phantom-mask.herokuapp.com/api/pharmacies/",
+					"protocol": "https",
+					"host": [
+						"kdan-hw-phantom-mask",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"pharmacies",
+						""
+					]
+				},
+				"description": "List all pharmacies"
+			},
+			"response": []
+		},
+		{
+			"name": "Masks",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://kdan-hw-phantom-mask.herokuapp.com/api/masks/",
+					"protocol": "https",
+					"host": [
+						"kdan-hw-phantom-mask",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"masks",
+						""
+					]
+				},
+				"description": "LIst all masks"
+			},
+			"response": []
+		},
+		{
+			"name": "1-1. Pharmacy open at",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://kdan-hw-phantom-mask.herokuapp.com/api/pharmacies/open_at?time=11:00",
+					"protocol": "https",
+					"host": [
+						"kdan-hw-phantom-mask",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"pharmacies",
+						"open_at"
+					],
+					"query": [
+						{
+							"key": "time",
+							"value": "11:00"
+						}
+					]
+				},
+				"description": "List all pharmacies that are open at a certain time, and on a day of the week if requested"
+			},
+			"response": []
+		},
+		{
+			"name": "1-2. Pharmacy open at with day",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://kdan-hw-phantom-mask.herokuapp.com/api/pharmacies/open_at?time=11:00&day=TUE",
+					"protocol": "https",
+					"host": [
+						"kdan-hw-phantom-mask",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"pharmacies",
+						"open_at"
+					],
+					"query": [
+						{
+							"key": "time",
+							"value": "11:00"
+						},
+						{
+							"key": "day",
+							"value": "TUE"
+						}
+					]
+				},
+				"description": "List all pharmacies that are open at a certain time, and on a day of the week if requested"
+			},
+			"response": []
+		},
+		{
+			"name": "2. Mask sold by",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://kdan-hw-phantom-mask.herokuapp.com/api/masks/sold_by?pharmacy=PrecisionMed&sorted_by=name",
+					"protocol": "https",
+					"host": [
+						"kdan-hw-phantom-mask",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"masks",
+						"sold_by"
+					],
+					"query": [
+						{
+							"key": "pharmacy",
+							"value": "PrecisionMed"
+						},
+						{
+							"key": "sorted_by",
+							"value": "name"
+						}
+					]
+				},
+				"description": "List all masks that are sold by a given pharmacy, sorted by mask name or mask price"
+			},
+			"response": []
+		},
+		{
+			"name": "3-1. Masks more than",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://kdan-hw-phantom-mask.herokuapp.com/api/pharmacies/masks_more_than?amount=1&start=20&end=40",
+					"protocol": "https",
+					"host": [
+						"kdan-hw-phantom-mask",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"pharmacies",
+						"masks_more_than"
+					],
+					"query": [
+						{
+							"key": "amount",
+							"value": "1"
+						},
+						{
+							"key": "start",
+							"value": "20"
+						},
+						{
+							"key": "end",
+							"value": "40"
+						}
+					]
+				},
+				"description": "List all pharmacies that have more or less than x mask products within a price range"
+			},
+			"response": []
+		},
+		{
+			"name": "3-2. Masks less than",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://kdan-hw-phantom-mask.herokuapp.com/api/pharmacies/masks_less_than?amount=5&start=20&end=40",
+					"protocol": "https",
+					"host": [
+						"kdan-hw-phantom-mask",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"pharmacies",
+						"masks_less_than"
+					],
+					"query": [
+						{
+							"key": "amount",
+							"value": "5"
+						},
+						{
+							"key": "start",
+							"value": "20"
+						},
+						{
+							"key": "end",
+							"value": "40"
+						}
+					]
+				},
+				"description": "List all pharmacies that have more or less than x mask products within a price range"
+			},
+			"response": []
+		},
+		{
+			"name": "4. Top X user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://kdan-hw-phantom-mask.herokuapp.com/api/users/most_transaction?top=5&start=2021-01-02&end=2021-01-14",
+					"protocol": "https",
+					"host": [
+						"kdan-hw-phantom-mask",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"users",
+						"most_transaction"
+					],
+					"query": [
+						{
+							"key": "top",
+							"value": "5"
+						},
+						{
+							"key": "start",
+							"value": "2021-01-02"
+						},
+						{
+							"key": "end",
+							"value": "2021-01-14"
+						}
+					]
+				},
+				"description": "The top x users by total transaction amount of masks within a date range"
+			},
+			"response": []
+		},
+		{
+			"name": "5. Total amount, value",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://kdan-hw-phantom-mask.herokuapp.com/api/masks/transaction?start=2021-01-05&end=2021-01-07",
+					"protocol": "https",
+					"host": [
+						"kdan-hw-phantom-mask",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"masks",
+						"transaction"
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "2021-01-05"
+						},
+						{
+							"key": "end",
+							"value": "2021-01-07"
+						}
+					]
+				},
+				"description": "The total amount of masks and dollar value of transactions that happened within a date range"
+			},
+			"response": []
+		},
+		{
+			"name": "6-1. Pharmacy search relevance",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://kdan-hw-phantom-mask.herokuapp.com/api/pharmacies/search?key=Sav",
+					"protocol": "https",
+					"host": [
+						"kdan-hw-phantom-mask",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"pharmacies",
+						"search"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "Sav"
+						}
+					]
+				},
+				"description": "Search for pharmacies or masks by name, ranked by relevance to search term"
+			},
+			"response": []
+		},
+		{
+			"name": "6-1. Mask search relevance",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://kdan-hw-phantom-mask.herokuapp.com/api/masks/search?key=green",
+					"protocol": "https",
+					"host": [
+						"kdan-hw-phantom-mask",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"masks",
+						"search"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "green"
+						}
+					]
+				},
+				"description": "Search for pharmacies or masks by name, ranked by relevance to search term"
+			},
+			"response": []
+		},
+		{
+			"name": "7. Create purchase history",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"pharmacy\": \"MedSavvy\",\n    \"mask\": \"Free to Roam (black) (10 per pack)\",\n    \"amount\": 3,\n    \"transactionDate\": \"2021-10-25\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://kdan-hw-phantom-mask.herokuapp.com/api/users/purchase?buyer=Eric Underwood",
+					"protocol": "https",
+					"host": [
+						"kdan-hw-phantom-mask",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"users",
+						"purchase"
+					],
+					"query": [
+						{
+							"key": "buyer",
+							"value": "Eric Underwood"
+						}
+					]
+				},
+				"description": "Process a user purchases a mask from a pharmacy, and handle all relevant data changes in an atomic transaction"
+			},
+			"response": []
+		}
+	]
+}
