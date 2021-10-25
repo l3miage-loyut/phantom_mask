@@ -26,6 +26,12 @@ public class OpeningHourDAO implements DAO<OpeningHour>{
   }
 
   @Override
+  public OpeningHour get(int id, Connection connection) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
   public ArrayList<OpeningHour> getAll() {
     // TODO Auto-generated method stub
     return null;
@@ -38,6 +44,18 @@ public class OpeningHourDAO implements DAO<OpeningHour>{
   }
 
   @Override
+  public OpeningHour save(OpeningHour t, Connection connection) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public OpeningHour update(OpeningHour t) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
   public OpeningHour update(OpeningHour t, Connection connection) {
     // TODO Auto-generated method stub
     return null;
@@ -45,6 +63,12 @@ public class OpeningHourDAO implements DAO<OpeningHour>{
 
   @Override
   public void delete(OpeningHour t) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void delete(OpeningHour t, Connection connection) {
     // TODO Auto-generated method stub
     
   }

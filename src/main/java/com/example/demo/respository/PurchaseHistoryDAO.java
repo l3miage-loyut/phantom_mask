@@ -26,6 +26,12 @@ public class PurchaseHistoryDAO implements DAO<PurchaseHistory> {
   }
 
   @Override
+  public PurchaseHistory get(int id, Connection connection) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
   public ArrayList<PurchaseHistory> getAll() {
     // TODO Auto-generated method stub
     return null;
@@ -38,6 +44,18 @@ public class PurchaseHistoryDAO implements DAO<PurchaseHistory> {
   }
 
   @Override
+  public PurchaseHistory save(PurchaseHistory t, Connection connection) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public PurchaseHistory update(PurchaseHistory t) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
   public PurchaseHistory update(PurchaseHistory t, Connection connection) {
     // TODO Auto-generated method stub
     return null;
@@ -45,6 +63,12 @@ public class PurchaseHistoryDAO implements DAO<PurchaseHistory> {
 
   @Override
   public void delete(PurchaseHistory t) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void delete(PurchaseHistory t, Connection connection) {
     // TODO Auto-generated method stub
     
   }

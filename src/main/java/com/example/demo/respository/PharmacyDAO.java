@@ -41,10 +41,17 @@ public class PharmacyDAO implements DAO<Pharmacy>{
         MaskDAO maskDAO = new MaskDAO();
         pharmacy.setMasks(maskDAO.getMasksByPharmacy(pharmacy.getId(), connection));
       }
+      connection.close();
       return pharmacy;
     } catch (Exception e) {
       return null;
     }
+  }
+
+  @Override
+  public Pharmacy get(int id, Connection connection) {
+    // TODO Auto-generated method stub
+    return null;
   }
 
   @Override
@@ -69,6 +76,7 @@ public class PharmacyDAO implements DAO<Pharmacy>{
 
         pharmacies.add(pharmacy);
       }
+      connection.close();
       return pharmacies;
     } catch (Exception e) {
       return null;
@@ -77,6 +85,18 @@ public class PharmacyDAO implements DAO<Pharmacy>{
 
   @Override
   public Pharmacy save(Pharmacy t) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Pharmacy save(Pharmacy t, Connection connection) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Pharmacy update(Pharmacy t) {
     // TODO Auto-generated method stub
     return null;
   }
@@ -105,6 +125,12 @@ public class PharmacyDAO implements DAO<Pharmacy>{
     
   }
 
+  @Override
+  public void delete(Pharmacy t, Connection connection) {
+    // TODO Auto-generated method stub
+
+  }
+
   public ArrayList<String> isOpen(String time, String day) {
     try {
       Connection connection = dataSource.getConnection();
@@ -126,6 +152,7 @@ public class PharmacyDAO implements DAO<Pharmacy>{
       while (rs.next()) {
         pharmacies.add(rs.getString("name"));
       }
+      connection.close();
       return pharmacies;
     } catch (Exception e) {
       return null;
@@ -135,13 +162,14 @@ public class PharmacyDAO implements DAO<Pharmacy>{
   public ArrayList<String> masksAmount(String start, String end, String more_than, String less_than) {
     try {
       Connection connection = dataSource.getConnection();
-      PreparedStatement stmt;
-      if(!more_than.equals("")) {
+      PreparedStatement stmt = null;
+      if(more_than!=null) {
         // case more than
         stmt = connection.prepareStatement(
           "SELECT p.\"name\" pharmacy, COUNT(m.id) masks FROM mask m JOIN pharmacy p ON m.idpharmacy = p.id WHERE m.price>? and m.price<? GROUP BY p.\"name\" HAVING COUNT(m.id)>?");
         stmt.setInt(3, Integer.parseInt(more_than));
-      } else {
+      }
+      if(less_than!=null) {
         // case less than
         stmt = connection.prepareStatement(
           "SELECT p.\"name\" pharmacy, COUNT(m.id) masks FROM mask m JOIN pharmacy p ON m.idpharmacy = p.id WHERE m.price>? and m.price<? GROUP BY p.\"name\" HAVING COUNT(m.id)<?");
@@ -156,6 +184,7 @@ public class PharmacyDAO implements DAO<Pharmacy>{
       while (rs.next()) {
         pharmacies.add(rs.getString("pharmacy"));
       }
+      connection.close();
       return pharmacies;
     } catch (Exception e) {
       System.out.println(e);
@@ -174,6 +203,7 @@ public class PharmacyDAO implements DAO<Pharmacy>{
       while (rs.next()) {
         pharmacies.add(rs.getString("name"));
       }
+      connection.close();
       return pharmacies;
     } catch (Exception e) {
       System.out.println(e);

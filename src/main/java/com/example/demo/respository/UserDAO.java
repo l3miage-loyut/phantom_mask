@@ -42,12 +42,19 @@ public class UserDAO implements DAO<User> {
         PurchaseHistoryDAO purchaseHistorydDao = new PurchaseHistoryDAO();
         user.setPurchase_histories(purchaseHistorydDao.getHistoriesByUser(user.getId(), connection));
       }
+      connection.close();
       return user;
     } catch (Exception e) {
       return null;
     }
   }
-  
+
+  @Override
+  public User get(int id, Connection connection) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
   public ArrayList<User> getAll() {
     // TODO Auto-generated method stub
     try (Connection connection = dataSource.getConnection()) {
@@ -60,11 +67,13 @@ public class UserDAO implements DAO<User> {
         user.setName(rs.getString("name"));
         user.setCash(rs.getFloat("cash"));
 
-        //PurchaseHistoryDAO purchaseHistorydDao = new PurchaseHistoryDAO();
-        //user.setPurchase_histories(purchaseHistorydDao.getHistoriesByUser(user.getId(), connection));
+        // PurchaseHistoryDAO purchaseHistorydDao = new PurchaseHistoryDAO();
+        // user.setPurchase_histories(purchaseHistorydDao.getHistoriesByUser(user.getId(),
+        // connection));
 
         users.add(user);
       }
+      connection.close();
       return users;
     } catch (Exception e) {
       return null;
@@ -73,6 +82,18 @@ public class UserDAO implements DAO<User> {
 
   @Override
   public User save(User t) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public User save(User t, Connection connection) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public User update(User t) {
     // TODO Auto-generated method stub
     return null;
   }
@@ -98,18 +119,23 @@ public class UserDAO implements DAO<User> {
   @Override
   public void delete(User t) {
     // TODO Auto-generated method stub
-    
+
+  }
+
+  @Override
+  public void delete(User t, Connection connection) {
+    // TODO Auto-generated method stub
+
   }
 
   public ArrayList<String> topXUsersBetween(String start, String end, String amount) {
-    try (Connection connection = dataSource.getConnection()){
-      PreparedStatement stmt = connection.prepareStatement(
-        "SELECT u.\"name\" as userName, SUM(amount) amount " +
-        "FROM purchase_history ph JOIN \"user\" u ON ph.iduser = u.id " +
-        "WHERE transactiondate BETWEEN Cast(? as timestamp) and Cast(? as timestamp) " +
-        "GROUP BY userName ORDER BY amount DESC LIMIT ?");
-      stmt.setString(1, start+" 00:00:00");
-      stmt.setString(2, end+" 23:59:59");
+    try (Connection connection = dataSource.getConnection()) {
+      PreparedStatement stmt = connection.prepareStatement("SELECT u.\"name\" as userName, SUM(amount) amount "
+          + "FROM purchase_history ph JOIN \"user\" u ON ph.iduser = u.id "
+          + "WHERE transactiondate BETWEEN Cast(? as timestamp) and Cast(? as timestamp) "
+          + "GROUP BY userName ORDER BY amount DESC LIMIT ?");
+      stmt.setString(1, start + " 00:00:00");
+      stmt.setString(2, end + " 23:59:59");
       stmt.setInt(3, Integer.parseInt(amount));
       ResultSet rs = stmt.executeQuery();
 
@@ -118,6 +144,7 @@ public class UserDAO implements DAO<User> {
       while (rs.next()) {
         masks.add(rs.getString("userName"));
       }
+      connection.close();
       return masks;
     } catch (Exception e) {
       System.out.println(e);
@@ -125,44 +152,50 @@ public class UserDAO implements DAO<User> {
     }
   }
 
-  public Map<String, Integer> purchase(String buyer, PurchaseHistory ph) {
+  public Map<String, Number> purchase(String buyer, PurchaseHistory ph) {
     try (Connection connection = dataSource.getConnection()) {
-      Map<String, Integer> updates = new HashMap<>();
+      Map<String, Number> updates = new HashMap<>();
       PurchaseHistoryDAO purchaseHistoryDAO = new PurchaseHistoryDAO();
       PharmacyDAO pharmacyDAO = new PharmacyDAO();
 
       MaskDAO maskDAO = new MaskDAO();
       Mask findMask = maskDAO.maskExist(ph.getMask(), ph.getPharmacy(), connection);
 
-      if(findMask.getId()>0) {
-        // mask exist in pharmacy indicated
-        User user = this.getUserByName(buyer);
-        if(user.getId()<=0) {
-          updates.put("user " + buyer + " does not exist", null);
-          return updates;
-        }
-        int result = purchaseHistoryDAO.save(ph, user.getId(), findMask.getId(), connection);
-        if(result>0){
-          updates.put("purchase history create sucessfully", result);
-        } else {
-          updates.put("purchase history create fail", result);
-        }
-
-        Float spend = ph.getAmount() * findMask.getPrice();
-
-        // update user's cash
-        user.setCash(user.getCash()-spend);
-        User newUser = this.update(user, connection);
-        updates.put(buyer + "'s cash has updated to", (int) newUser.getCash());
-
-        // update pharmacy's cash
-        Pharmacy pharmacy = pharmacyDAO.getPharmacyByName(ph.getPharmacy(), connection);
-        pharmacy.setCash(pharmacy.getCash()+spend);
-        Pharmacy newPharmacy = pharmacyDAO.update(pharmacy, connection);
-        updates.put(newPharmacy.getName() + "'s cash has updated to", (int) newPharmacy.getCash());
-      } else {
-        updates.put(ph.getMask() + " does not exist in " + ph.getPharmacy(), null);
+      if (findMask.getId() <= 0) {
+        updates.put(ph.getMask() + " does not exist in " + ph.getPharmacy(), -1);
+        connection.close();
+        return updates;
       }
+
+      // mask exist in pharmacy indicated
+      User user = this.getUserByName(buyer);
+      if (user.getId() <= 0) {
+        updates.put("user " + buyer + " does not exist", -2);
+        connection.close();
+        return updates;
+      }
+      int result = purchaseHistoryDAO.save(ph, user.getId(), findMask.getId(), connection);
+      if (result <= 0) {
+        updates.put("purchase history create fail", -3);
+        connection.close();
+        return updates;
+      }
+      
+      updates.put("purchase history create sucessfully", result);
+
+      Float spend = ph.getAmount() * findMask.getPrice();
+
+      // update user's cash
+      user.setCash(user.getCash() - spend);
+      User newUser = this.update(user, connection);
+      updates.put(buyer + "'s cash has updated to", newUser.getCash());
+
+      // update pharmacy's cash
+      Pharmacy pharmacy = pharmacyDAO.getPharmacyByName(ph.getPharmacy(), connection);
+      pharmacy.setCash(pharmacy.getCash() + spend);
+      Pharmacy newPharmacy = pharmacyDAO.update(pharmacy, connection);
+      updates.put(newPharmacy.getName() + "'s cash has updated to", newPharmacy.getCash());
+      connection.close();
       return updates;
     } catch (Exception e) {
       System.out.println(e);
@@ -183,6 +216,7 @@ public class UserDAO implements DAO<User> {
         user.setName(rs.getString("name"));
         user.setCash(rs.getFloat("cash"));
       }
+      connection.close();
       return user;
     } catch (Exception e) {
       return null;

@@ -28,6 +28,12 @@ public class MaskDAO implements DAO<Mask> {
   }
 
   @Override
+  public Mask get(int id, Connection connection) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
   public ArrayList<Mask> getAll() {
     // TODO Auto-generated method stub
     try (Connection connection = dataSource.getConnection()) {
@@ -41,6 +47,7 @@ public class MaskDAO implements DAO<Mask> {
         mask.setPrice(rs.getFloat("price"));
         masks.add(mask);
       }
+      connection.close();
       return masks;
     } catch (Exception e) {
       return null;
@@ -54,6 +61,18 @@ public class MaskDAO implements DAO<Mask> {
   }
 
   @Override
+  public Mask save(Mask t, Connection connection) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Mask update(Mask t) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
   public Mask update(Mask t, Connection connection) {
     // TODO Auto-generated method stub
     return null;
@@ -61,6 +80,12 @@ public class MaskDAO implements DAO<Mask> {
 
   @Override
   public void delete(Mask t) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void delete(Mask t, Connection connection) {
     // TODO Auto-generated method stub
 
   }
@@ -115,6 +140,7 @@ public class MaskDAO implements DAO<Mask> {
         mask.setPrice(rs.getFloat("price"));
         masks.add(mask);
       }
+      connection.close();
       return masks;
     } catch (Exception e) {
       System.out.println(e);
@@ -140,6 +166,7 @@ public class MaskDAO implements DAO<Mask> {
         map.put("total amount", rs.getInt("totalAmount"));
         map.put("total value", rs.getInt("totalValue"));
       }
+      connection.close();
       return map;
     } catch (Exception e) {
       System.out.println(e);
@@ -158,6 +185,7 @@ public class MaskDAO implements DAO<Mask> {
       while (rs.next()) {
         masks.add(rs.getString("name"));
       }
+      connection.close();
       return masks;
     } catch (Exception e) {
       System.out.println(e);
